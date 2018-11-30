@@ -7,25 +7,29 @@
 # - https://superuser.com/questions/1184815/is-a-way-to-quickly-set-screen-refresh-rate
 ####
 
-$RefreshRate1 = 60
-$RefreshRate2 = 144
+$refreshRate1 = 60
+$refreshRate2 = 144
 $win32_VideoController = Get-WmiObject "Win32_VideoController"
 
 foreach ($objItem in $win32_VideoController) {
-    $CurrentHorizontalResolution = $objItem.CurrentHorizontalResolution
-    $CurrentVerticalResolution = $objItem.CurrentVerticalResolution
-    $CurrentBitsPerPixel = $objItem.CurrentBitsPerPixel
-    $CurrentRefreshRate = [int]$objItem.CurrentRefreshRate
+    $currentHorizontalResolution = $objItem.CurrentHorizontalResolution
+    $currentVerticalResolution = $objItem.CurrentVerticalResolution
+    $currentBitsPerPixel = $objItem.CurrentBitsPerPixel
+    $currentRefreshRate = [int]$objItem.CurrentRefreshRate
 
-    if($CurrentRefreshRate.Equals($RefreshRate1)){
-        Write-Host "Refresh rate was $RefreshRate1 is now $RefreshRate2."
-        nircmdc.exe setdisplay $CurrentHorizontalResolution $CurrentVerticalResolution $CurrentBitsPerPixel $RefreshRate2
-    }elseif($CurrentRefreshRate.Equals($RefreshRate2)){
-        Write-Host "Refresh rate was $RefreshRate2 is now $RefreshRate1."
-        nircmdc.exe setdisplay $CurrentHorizontalResolution $CurrentVerticalResolution $CurrentBitsPerPixel $RefreshRate1
+    if($currentRefreshRate.Equals($refreshRate1)){
+        Write-Host "Current refresh rate is $refreshRate1."
+        $userInput = Read-Host -Prompt "Set rate to $refreshRate2? [y/ANY]"
+        if($userInput.Equals('y')){
+            nircmdc.exe setdisplay $currentHorizontalResolution $currentVerticalResolution $currentBitsPerPixel $refreshRate2
+        }
+    }elseif($currentRefreshRate.Equals($refreshRate2)){
+        Write-Host "Current refresh rate is $refreshRate2."
+        $userInput = Read-Host -Prompt "Set rate to $refreshRate1? [y/ANY]"
+        if($userInput.Equals('y')){
+            nircmdc.exe setdisplay $currentHorizontalResolution $currentVerticalResolution $currentBitsPerPixel $refreshRate1
+        }
     }else{
         Write-Host "Unknown refresh rate. Doing nothing."
     }
 }
-
-Read-Host -Prompt "Press Enter to exit"
