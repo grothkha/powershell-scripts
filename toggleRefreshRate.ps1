@@ -19,17 +19,18 @@ foreach ($objItem in $win32_VideoController) {
 
     if($currentRefreshRate.Equals($refreshRate1)){
         Write-Host "Current refresh rate is $refreshRate1."
-        $userInput = Read-Host -Prompt "Set rate to $refreshRate2? [y/ANY]"
+        $userInput = Read-Host -Prompt "Set rate to $refreshRate2 ? [y/ANY]"
         if($userInput.Equals('y')){
             nircmdc.exe setdisplay $currentHorizontalResolution $currentVerticalResolution $currentBitsPerPixel $refreshRate2
         }
     }elseif($currentRefreshRate.Equals($refreshRate2)){
         Write-Host "Current refresh rate is $refreshRate2."
-        $userInput = Read-Host -Prompt "Set rate to $refreshRate1? [y/ANY]"
+        $userInput = Read-Host -Prompt "Set rate to $refreshRate1 ? [y/ANY]"
         if($userInput.Equals('y')){
             nircmdc.exe setdisplay $currentHorizontalResolution $currentVerticalResolution $currentBitsPerPixel $refreshRate1
         }
     }else{
         Write-Host "Unknown refresh rate. Doing nothing."
+        Read-Host -Prompt "Enter to exit.."
     }
 }
